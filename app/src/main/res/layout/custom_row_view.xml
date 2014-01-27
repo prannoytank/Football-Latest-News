@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+      android:layout_width="fill_parent"
+      android:layout_height="fill_parent" >
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Demo Text"
+
+        android:gravity="center"
+        android:textColor="#CC0033"
+        android:textSize="14dp" />
+
+    <ImageView
+        android:id="@+id/icon"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_below="@+id/title"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp" />
+
+
+    <TextView
+        android:id="@+id/headline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/title"
+        android:text="Sample Desc"
+        android:layout_toRightOf="@+id/icon"
+        android:paddingLeft="5dp"
+        android:textColor="#3399FF"
+        android:textSize="12dp" />
+
+ <TextView android:id="@+id/pubDate"
+  android:layout_width="fill_parent"
+  android:layout_height="wrap_content"
+  android:text="Sample Date"
+  android:layout_below="@+id/headline"
+  android:textSize="10dp"
+  android:gravity="right"
+
+  />
+ 
+ <TextView android:id="@+id/link"
+  android:layout_width="wrap_content" 
+  android:layout_height="wrap_content"
+  android:visibility="gone"
+  />
+
+</RelativeLayout>

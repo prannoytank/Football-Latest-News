@@ -3,6 +3,7 @@
     package="com.footballLatest.app" >
 
     <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
@@ -10,6 +11,17 @@
         android:theme="@style/AppTheme" >
         <activity
             android:name="com.footballLatest.app.MainActivity"
+            android:label="Football Latest News" >
+            <intent-filter>
+                <action android:name="com.footballLatest.app.MainActivity" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+
+        <activity
+            android:name="com.footballLatest.app.Splash"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -17,6 +29,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
     </application>
 
 </manifest>
