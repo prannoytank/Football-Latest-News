@@ -39,7 +39,7 @@ public class Splash extends Activity
 				}
 				finally
 				{
-					Intent start=new Intent("com.footballLatest.app.MainActivity");
+					Intent start=new Intent("com.footballLatest.app.ChannelSelection");
 					startActivity(start);
 					
 				}

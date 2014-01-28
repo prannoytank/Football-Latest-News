@@ -27,6 +27,7 @@ public class XmlParsing {
         List feedLinks=new ArrayList();
         List feedDesc=new ArrayList();
         List feedPubDate=new ArrayList();
+      // List feedImageUrl=new ArrayList();
         FeedBean feedObj = null;
 
 
@@ -51,7 +52,7 @@ public class XmlParsing {
          * In order to achieve this, we will make use of a boolean variable.
          */
             boolean insideItem = false;
-
+            int ImageCount=0;
             // Returns the type of current event: START_TAG, END_TAG, etc..
             int eventType = xpp.getEventType();
             while (eventType != XmlPullParser.END_DOCUMENT) {
@@ -60,7 +61,7 @@ public class XmlParsing {
 
                     if (xpp.getName().equalsIgnoreCase("item")) {
                         insideItem = true;
-
+                        ImageCount=0;
                     } else if (xpp.getName().equalsIgnoreCase("title")) {
                         if (insideItem){
                             String title = xpp.nextText();
@@ -96,6 +97,22 @@ public class XmlParsing {
                            // Log.i(LOGCAT, "desc from xml-->" +feedObj.getDesc());
                         }
                      }
+                 /*  else if (xpp.getName().trim().equalsIgnoreCase("media:thumbnail")) {
+                        if (insideItem){
+
+                            if(ImageCount==1)
+                            {
+                            String imageUrl=xpp.getAttributeValue(null, "url");
+                            //Log.i(LOGCAT, "Image Link from xml-->" +imageUrl);
+                            feedImageUrl.add(imageUrl);
+
+                            }
+                            ++ImageCount;
+                            //feedObj.setDesc(desc); //extract the description of article
+                            // Log.i(LOGCAT, "desc from xml-->" +feedObj.getDesc());
+                        }
+                    }*/
+
 
                    // Log.i(LOGCAT, "Size" +data.size());
                        // add feedbean object to the data ArrayList
@@ -115,7 +132,13 @@ public class XmlParsing {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
+ /*   if(feedImageUrl.isEmpty())
+    {
+        for(int i=0;i<=100;i++)
+        {
+            feedImageUrl.add("null");
+        }
+    }*/
         for(int i=0;i<feedTitle.size();i++)
         {
             feedObj=new FeedBean();
@@ -123,6 +146,7 @@ public class XmlParsing {
             feedObj.setDesc(feedDesc.get(i).toString());
             feedObj.setDesc(feedDesc.get(i).toString());
             feedObj.setPubDate(feedPubDate.get(i).toString());
+           // feedObj.setImageLink(feedImageUrl.get(i).toString());
             data.add(feedObj);
 
         }

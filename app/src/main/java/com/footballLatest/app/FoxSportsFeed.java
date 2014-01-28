@@ -38,13 +38,14 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends Activity {
+public class FoxSportsFeed extends Activity {
     private static final String LOGCAT = null;
-    public static MainActivity instance;
+    public static FoxSportsFeed instance;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.sky_sports);
         instance=this;
         /*if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
@@ -72,19 +73,18 @@ public class MainActivity extends Activity {
 
                 /*Checks if Internet Connection is their or not */
 
-                if(!isNetworkAvailable(MainActivity.this)) {
-                    Toast.makeText(MainActivity.this, "No Internet connection", Toast.LENGTH_LONG).show();
+                if(!isNetworkAvailable(FoxSportsFeed.this)) {
+                    Toast.makeText(FoxSportsFeed.this, "No Internet connection", Toast.LENGTH_LONG).show();
                     finish(); //Calling this method to close this activity when internet is not available.
                 }
                 XmlParsing xp=new XmlParsing();
-                feedList=xp.getFeedData("http://feeds.bbci.co.uk/sport/0/football/rss.xml"); //Gets Feeds
+                feedList=xp.getFeedData("http://www.foxsportsasia.com/football-rss/"); //Gets Feeds
                 return null;
             }
 
-// Binding data
             protected void onPreExecute()
             {
-                ProgressDialog progress = new ProgressDialog(MainActivity.this);
+                ProgressDialog progress = new ProgressDialog(FoxSportsFeed.this);
                 progress.setTitle("Loading");
                 progress.setMessage("Please Wait...");
                 progress.show();
@@ -94,15 +94,19 @@ public class MainActivity extends Activity {
 
 
             }
+
+
+
             protected void onPostExecute(Void result) {
                 //super.onPostExecute();
                 //ArrayAdapter adapter =new ArrayAdapter(MainActivity.this,android.R.layout.simple_list_item_1,headlines);
-                feedAdapter=new MyCustomBaseAdapterForFeed(MainActivity.this, feedList);
+                feedAdapter=new MyCustomBaseAdapterForFeed(FoxSportsFeed.this, feedList);
                 //setListAdapter();
 
-                lv=(ListView)findViewById(android.R.id.list);
+                lv=(ListView)findViewById(R.id.list_sky);
                 lv.setAdapter(feedAdapter);
                 feedAdapter.notifyDataSetChanged();
+
             }
         }
         new RetreiveFeedTask().execute();
@@ -111,7 +115,7 @@ public class MainActivity extends Activity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        
+
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
         return true;

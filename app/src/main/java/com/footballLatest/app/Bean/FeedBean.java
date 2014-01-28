@@ -10,6 +10,7 @@ public class FeedBean {
     private String desc="";
     private String link="";
     private String pubDate="";
+    private String imageLink="";
 
     public String getTitle() {
         return title;
@@ -40,5 +41,13 @@ public class FeedBean {
 
     public void setPubDate(String pubDate) {
         this.pubDate = pubDate;
+    }
+
+    public String getImageLink() {
+        return imageLink;
+    }
+
+    public void setImageLink(String imageLink) {
+        this.imageLink = imageLink;
     }
 }
