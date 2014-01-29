@@ -144,7 +144,7 @@ public class XmlParsing {
             feedObj=new FeedBean();
             feedObj.setTitle(feedTitle.get(i).toString());
             feedObj.setDesc(feedDesc.get(i).toString());
-            feedObj.setDesc(feedDesc.get(i).toString());
+            feedObj.setLink(feedLinks.get(i).toString());
             feedObj.setPubDate(feedPubDate.get(i).toString());
            // feedObj.setImageLink(feedImageUrl.get(i).toString());
             data.add(feedObj);

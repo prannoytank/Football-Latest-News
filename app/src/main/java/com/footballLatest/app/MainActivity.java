@@ -4,7 +4,9 @@ import android.app.Activity;
 import android.app.ListActivity;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.net.ConnectivityManager;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.provider.SyncStateContract;
 import android.support.v7.app.ActionBarActivity;
@@ -18,6 +20,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.os.Build;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -38,14 +41,16 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends Activity {
+public class MainActivity extends Activity implements View.OnClickListener{
     private static final String LOGCAT = null;
     public static MainActivity instance;
+    ListView lv;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         instance=this;
+      lv=(ListView)findViewById(android.R.id.list);
         /*if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.container, new PlaceholderFragment())
@@ -55,7 +60,7 @@ public class MainActivity extends Activity {
 
 
         class RetreiveFeedTask extends AsyncTask<String,Void,Void> {
-            ListView lv;
+
             ArrayList<FeedBean> feedList=new ArrayList<FeedBean>();
 
             MyCustomBaseAdapterForFeed feedAdapter;
@@ -106,6 +111,23 @@ public class MainActivity extends Activity {
             }
         }
         new RetreiveFeedTask().execute();
+
+        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            public void onItemClick(AdapterView<?> parent, View view,int position, long id) {
+                Object dataObject = parent.getItemAtPosition(position);
+                FeedBean fullObject = (FeedBean)dataObject;
+              Log.i(LOGCAT,"Link->"+fullObject.getLink());
+                Uri uri = Uri.parse(fullObject.getLink());
+                Intent browser = new Intent(Intent.ACTION_VIEW,uri);
+
+
+                startActivity(browser);
+
+            }
+        });
+
+
     }
 
 
@@ -139,6 +161,10 @@ public class MainActivity extends Activity {
             return false;
     }
 
+    @Override
+    public void onClick(View view) {
+
+    }
 }
 
 

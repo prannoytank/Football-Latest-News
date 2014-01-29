@@ -8,16 +8,16 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@drawable/ic_launcher"
+        android:icon="@drawable/soccer48"
         android:label="Football Latest"
         android:theme="@style/AppTheme" >
 
         <!-- BBC Feed -->
         <activity
             android:name="com.footballLatest.app.MainActivity"
-            android:label="Football Latest News" >
+            android:label="Football Latest News" android:configChanges="orientation|screenSize">
             <intent-filter>
-                <action android:name="com.footballLatest.app.MainActivity" />
+                <action android:name="com.footballLatest.app.MainActivity" android:configChanges="orientation|screenSize"/>
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
@@ -46,7 +46,7 @@
         </activity>
 
         <!-- Fox Sports Feed -->
-        <activity android:name="com.footballLatest.app.FoxSportsFeed" />
+        <activity android:name="com.footballLatest.app.FoxSportsFeed" android:configChanges="orientation|screenSize"/>
 
     </application>
 
