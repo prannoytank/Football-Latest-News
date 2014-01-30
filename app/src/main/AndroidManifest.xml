@@ -15,14 +15,37 @@
         <!-- BBC Feed -->
         <activity
             android:name="com.footballLatest.app.MainActivity"
-            android:label="Football Latest News" android:configChanges="orientation|screenSize">
+            android:configChanges="orientation|screenSize"
+            android:label="Football Latest News" >
             <intent-filter>
-                <action android:name="com.footballLatest.app.MainActivity" android:configChanges="orientation|screenSize"/>
+                <action
+                    android:name="com.footballLatest.app.MainActivity"
+                    android:configChanges="orientation|screenSize" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-      <!-- Splash Page -->
+        <activity android:name="com.footballLatest.app.twitterLogin" >
+            <intent-filter>
+                <action
+                    android:name="com.footballLatest.app.twitterLogin"
+                    android:configChanges="orientation|screenSize" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="t4jsample"
+                    android:scheme="oauth" />
+            </intent-filter>
+        </activity>
+
+        <!-- Splash Page -->
         <activity
             android:name="com.footballLatest.app.Splash"
             android:label="@string/app_name" >
@@ -32,7 +55,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
 
         <!-- Channel Selection Page -->
         <activity
@@ -46,8 +68,32 @@
         </activity>
 
         <!-- Fox Sports Feed -->
-        <activity android:name="com.footballLatest.app.FoxSportsFeed" android:configChanges="orientation|screenSize"/>
+        <activity
+            android:name="com.footballLatest.app.FoxSportsFeed"
+            android:configChanges="orientation|screenSize" >
+
+            android:label="Fox Sports" >
+        </activity>
+
+
+        <!-- Fox Sports Single -->
+
+        <activity
+            android:name="com.footballLatest.app.foxSportsSinglePage"
+            android:label="Fox Sports"
+            android:parentActivityName="com.footballLatest.app.ChannelSelection" >
+            <!-- Parent activity meta-data to support 4.0 and lower -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.footballLatest.app.ChannelSelection" />
+        </activity>
+
+
 
     </application>
+
+
+
+
 
 </manifest>

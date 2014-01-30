@@ -122,8 +122,9 @@ public class FoxSportsFeed extends Activity implements View.OnClickListener{
                 Object dataObject = parent.getItemAtPosition(position);
                 FeedBean fullObject = (FeedBean)dataObject;
 
-                Intent i = new Intent(Intent.ACTION_VIEW);
-                i.setData(Uri.parse(fullObject.getLink()));
+                Intent i = new Intent(FoxSportsFeed.this,foxSportsSinglePage.class);
+               // i.setData(Uri.parse(fullObject.getLink()));
+                i.putExtra("URL",fullObject.getLink());
                 startActivity(i);
 
             }
