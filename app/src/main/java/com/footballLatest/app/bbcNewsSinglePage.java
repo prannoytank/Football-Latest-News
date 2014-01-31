@@ -1,27 +1,16 @@
 package com.footballLatest.app;
 
-import android.app.ActionBar;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
-
-import android.support.v4.app.Fragment;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.os.Build;
-import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -30,7 +19,10 @@ import org.jsoup.select.Elements;
 import java.io.IOException;
 import java.net.URL;
 
-public class foxSportsSinglePage extends Activity {
+/**
+ * Created by AshirwadTank on 1/31/14.
+ */
+public class bbcNewsSinglePage extends Activity {
 
     TextView foxTitle,foxContent;
     ImageView foxImage;
@@ -45,27 +37,9 @@ public class foxSportsSinglePage extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fox_sports_single_page);
 
-        //ArrayAdapter<String> adapter = new ArrayAdapter<String>(getBaseContext(), android.R.layout.simple_spinner_dropdown_item, actions);
 
-        /** Enabling dropdown list navigation for the action bar */
-        //getActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
         getActionBar().setDisplayUseLogoEnabled(false);
         getActionBar().setDisplayShowTitleEnabled(false);
-        /** Defining Navigation listener */
-      /*  ActionBar.OnNavigationListener navigationListener = new ActionBar.OnNavigationListener() {
-
-            @Override
-            public boolean onNavigationItemSelected(int itemPosition, long itemId) {
-                Toast.makeText(getBaseContext(), "You selected : " + actions[itemPosition], Toast.LENGTH_SHORT).show();
-                return false;
-            }
-        };*/
-
-        /** Setting dropdown items and item navigation listener for the actionbar */
-        //getActionBar().setListNavigationCallbacks(adapter, navigationListener);
-        //getActionBar().setSelectedNavigationItem(0);
-
-
 
         foxTitle=(TextView)findViewById(R.id.FoxTitle);
 
@@ -85,11 +59,11 @@ public class foxSportsSinglePage extends Activity {
             String MainContent;
             String MainTitle;
             String MainImage;
-            ProgressDialog mProgressDialog = new ProgressDialog(foxSportsSinglePage.this);
+            ProgressDialog mProgressDialog = new ProgressDialog(bbcNewsSinglePage.this);
             Bitmap bitmap;
             foxSportsSingle(String url)
             {
-               //this.image=image;
+                //this.image=image;
                 this.content=content;
                 this.url=url;
                 //this.title=title;
@@ -99,13 +73,13 @@ public class foxSportsSinglePage extends Activity {
             protected Void doInBackground(String... strings) {
 
                 try {
-                     doc = Jsoup.connect(url).get();
+                    doc = Jsoup.connect(url).get();
 
-                    title=doc.select("article header h1");
-                   // titleDoc=Jsoup.parse(title.toString());
+                    title=doc.select(".story-body .article #headline h1");
+                    // titleDoc=Jsoup.parse(title.toString());
 
-                    description = doc.select("div.content p");
-                    image=doc.select("article header img");
+                    description = doc.select(".story-body .article p");
+                    image=doc.select(".story-body .story-feature img");
                     MainImage=image.attr("abs:src");
                     URL url = new URL(MainImage);
                     bitmap = BitmapFactory.decodeStream(url.openStream());
@@ -113,7 +87,7 @@ public class foxSportsSinglePage extends Activity {
                     Document doc = Jsoup.parse(description.toString());
                     doc.select("p").prepend("\\n\\n");
                     MainContent=doc.text().replace("\\n", "\n");
-                    } catch (IOException e) {
+                } catch (IOException e) {
                     e.printStackTrace();
                 }
 
@@ -124,7 +98,7 @@ public class foxSportsSinglePage extends Activity {
             protected void onPreExecute() {
                 super.onPreExecute();
 
-               // mProgressDialog.setTitle("Android Basic JSoup Tutorial");
+                // mProgressDialog.setTitle("Android Basic JSoup Tutorial");
                 mProgressDialog.setMessage("Fetching...");
                 mProgressDialog.setIndeterminate(false);
                 mProgressDialog.setCancelable(false);
@@ -152,12 +126,12 @@ public class foxSportsSinglePage extends Activity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        
+
         // Inflate the menu; this adds items to the action bar if it is present.
 
 
         getMenuInflater().inflate(R.menu.social_share, menu);
-            return true;
+        return true;
 
     }
 
@@ -176,4 +150,3 @@ public class foxSportsSinglePage extends Activity {
 
 
 }
-

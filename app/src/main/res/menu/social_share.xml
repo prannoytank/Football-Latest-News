@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+      <item
+        android:id="@+id/twitter_tweet"
+        android:orderInCategory="1"
+        android:showAsAction="ifRoom"
+        android:icon="@drawable/ic_twitter"
+        android:title="Share it on Twitter"/>
+
+    <item
+        android:id="@+id/facebook_share"
+        android:orderInCategory="1"
+        android:showAsAction="ifRoom"
+        android:icon="@drawable/facebook48"
+        android:title="Share it on Facebook"/>
+
+
+    <item android:id="@+id/airport_menuRefresh"
+        android:icon="@drawable/ic_action_refresh"
+        android:title="Refresh"
+        android:orderInCategory="1"
+        android:showAsAction="ifRoom" />
+</menu>

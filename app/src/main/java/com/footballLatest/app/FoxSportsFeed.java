@@ -63,7 +63,7 @@ public class FoxSportsFeed extends Activity implements View.OnClickListener{
         class RetreiveFeedTask extends AsyncTask<String,Void,Void> {
 
             ArrayList<FeedBean> feedList=new ArrayList<FeedBean>();
-
+            ProgressDialog mProgressDialog = new ProgressDialog(FoxSportsFeed.this);
             MyCustomBaseAdapterForFeed feedAdapter;
             public InputStream getInputStream(URL url) {
                 try {
@@ -89,12 +89,10 @@ public class FoxSportsFeed extends Activity implements View.OnClickListener{
 
             protected void onPreExecute()
             {
-                ProgressDialog progress = new ProgressDialog(FoxSportsFeed.this);
-                progress.setTitle("Loading");
-                progress.setMessage("Please Wait...");
-                progress.show();
-                progress.dismiss();
-
+                mProgressDialog.setMessage("Loading...");
+                mProgressDialog.setIndeterminate(false);
+                mProgressDialog.setCancelable(false);
+                mProgressDialog.show();
 
 
 
@@ -111,6 +109,10 @@ public class FoxSportsFeed extends Activity implements View.OnClickListener{
                 lv=(ListView)findViewById(R.id.list_sky);
                 lv.setAdapter(feedAdapter);
                 feedAdapter.notifyDataSetChanged();
+                if(mProgressDialog.isShowing())
+                {
+                    mProgressDialog.dismiss();
+                }
 
             }
         }

@@ -48,7 +48,9 @@
         <!-- Splash Page -->
         <activity
             android:name="com.footballLatest.app.Splash"
-            android:label="@string/app_name" >
+            android:label="@string/app_name"
+            android:configChanges="orientation|screenSize"
+            >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -59,7 +61,9 @@
         <!-- Channel Selection Page -->
         <activity
             android:name="com.footballLatest.app.ChannelSelection"
-            android:label="Channel List" >
+            android:label="Channel List"
+            android:configChanges="orientation|screenSize"
+            >
             <intent-filter>
                 <action android:name="com.footballLatest.app.ChannelSelection" />
 
@@ -80,13 +84,30 @@
 
         <activity
             android:name="com.footballLatest.app.foxSportsSinglePage"
-            android:label="Fox Sports"
-            android:parentActivityName="com.footballLatest.app.ChannelSelection" >
+            android:parentActivityName="com.footballLatest.app.ChannelSelection"
+            android:configChanges="orientation|screenSize"
+            >
             <!-- Parent activity meta-data to support 4.0 and lower -->
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.footballLatest.app.ChannelSelection" />
         </activity>
+
+
+
+        <!-- Fox Sports Single -->
+
+        <activity
+            android:name="com.footballLatest.app.bbcNewsSinglePage"
+            android:parentActivityName="com.footballLatest.app.ChannelSelection"
+            android:configChanges="orientation|screenSize"
+            >
+            <!-- Parent activity meta-data to support 4.0 and lower -->
+            <meta-data android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.footballLatest.app.ChannelSelection" />
+        </activity>
+
+
 
 
 

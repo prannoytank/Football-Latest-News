@@ -50,7 +50,7 @@ public class MainActivity extends Activity implements View.OnClickListener{
         class RetreiveFeedTask extends AsyncTask<String,Void,Void> {
 
             ArrayList<FeedBean> feedList=new ArrayList<FeedBean>();
-
+            ProgressDialog mProgressDialog = new ProgressDialog(MainActivity.this);
             MyCustomBaseAdapterForFeed feedAdapter;
             public InputStream getInputStream(URL url) {
                 try {
@@ -77,15 +77,10 @@ public class MainActivity extends Activity implements View.OnClickListener{
 // Binding data
             protected void onPreExecute()
             {
-                ProgressDialog progress = new ProgressDialog(MainActivity.this);
-                progress.setTitle("Loading");
-                progress.setMessage("Please Wait...");
-                progress.show();
-                progress.dismiss();
-
-
-
-
+                mProgressDialog.setMessage("Fetching...");
+                mProgressDialog.setIndeterminate(false);
+                mProgressDialog.setCancelable(false);
+                mProgressDialog.show();
             }
             protected void onPostExecute(Void result) {
                 //super.onPostExecute();
@@ -96,6 +91,11 @@ public class MainActivity extends Activity implements View.OnClickListener{
                 lv=(ListView)findViewById(android.R.id.list);
                 lv.setAdapter(feedAdapter);
                 feedAdapter.notifyDataSetChanged();
+                if(mProgressDialog.isShowing())
+                {
+                    mProgressDialog.dismiss();
+                }
+
             }
         }
         new RetreiveFeedTask().execute();
@@ -105,12 +105,10 @@ public class MainActivity extends Activity implements View.OnClickListener{
             public void onItemClick(AdapterView<?> parent, View view,int position, long id) {
                 Object dataObject = parent.getItemAtPosition(position);
                 FeedBean fullObject = (FeedBean)dataObject;
-              Log.i(LOGCAT,"Link->"+fullObject.getLink());
-                Uri uri = Uri.parse(fullObject.getLink());
-                Intent browser = new Intent(Intent.ACTION_VIEW,uri);
-
-
-                startActivity(browser);
+                Intent i = new Intent(MainActivity.this,bbcNewsSinglePage.class);
+                // i.setData(Uri.parse(fullObject.getLink()));
+                i.putExtra("URL",fullObject.getLink());
+                startActivity(i);
 
             }
         });
