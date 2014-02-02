@@ -1,11 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">FootballLatest</string>
+    <string name="app_name">Football Latest</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_channel_selection">ChannelSelection</string>
     <string name="title_activity_twitter_login">twitterLogin</string>
     <string name="title_activity_fox_sports_single_page">foxSportsSinglePage</string>
+
+    /* Main Menu ListView list */
+    <string-array name="MainMenu">
+            <item>News</item>
+            <item>Twitter</item>
+            <item>Facebook</item>
+        </string-array>
+
 
 </resources>

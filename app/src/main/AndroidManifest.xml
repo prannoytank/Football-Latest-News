@@ -25,17 +25,24 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity android:name="com.footballLatest.app.twitterLogin" >
+
+        <!--- Twitter Login -->
+
+
+        <activity android:name="com.footballLatest.app.twitterLogin"
+            android:configChanges="orientation|screenSize"
+            android:parentActivityName="com.footballLatest.app.MainMenu">
+            <!-- Parent activity meta-data to support 4.0 and lower -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.footballLatest.app.MainMenu" />
             <intent-filter>
-                <action
-                    android:name="com.footballLatest.app.twitterLogin"
-                    android:configChanges="orientation|screenSize" />
+                <action android:name="com.footballLatest.app.twitterLogin" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
-
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
 
@@ -63,10 +70,14 @@
             android:name="com.footballLatest.app.ChannelSelection"
             android:label="Channel List"
             android:configChanges="orientation|screenSize"
+            android:parentActivityName="com.footballLatest.app.MainMenu"
             >
+            <!-- Parent activity meta-data to support 4.0 and lower -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.footballLatest.app.MainMenu" />
             <intent-filter>
                 <action android:name="com.footballLatest.app.ChannelSelection" />
-
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
@@ -74,8 +85,7 @@
         <!-- Fox Sports Feed -->
         <activity
             android:name="com.footballLatest.app.FoxSportsFeed"
-            android:configChanges="orientation|screenSize" >
-
+            android:configChanges="orientation|screenSize"
             android:label="Fox Sports" >
         </activity>
 
@@ -108,13 +118,21 @@
         </activity>
 
 
+        <!-- Main Menu -->
 
+        <activity
+            android:name="com.footballLatest.app.MainMenu"
+            android:label="Soccer Current"
+            >
+            <intent-filter>
+                <action
+                    android:name="com.footballLatest.app.MainMenu"
+                    android:configChanges="orientation|screenSize" />
 
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+
+        </activity>
 
     </application>
-
-
-
-
-
 </manifest>

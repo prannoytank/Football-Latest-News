@@ -31,7 +31,7 @@ public class Splash extends Activity
 				
 				try {
 
-					sleep(5000);
+					sleep(2000);
 					
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
@@ -39,7 +39,7 @@ public class Splash extends Activity
 				}
 				finally
 				{
-					Intent start=new Intent("com.footballLatest.app.ChannelSelection");
+					Intent start=new Intent("com.footballLatest.app.MainMenu");
 					startActivity(start);
 					
 				}

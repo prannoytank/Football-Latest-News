@@ -77,7 +77,7 @@ public class MainActivity extends Activity implements View.OnClickListener{
 // Binding data
             protected void onPreExecute()
             {
-                mProgressDialog.setMessage("Fetching...");
+                mProgressDialog.setMessage("Loading...");
                 mProgressDialog.setIndeterminate(false);
                 mProgressDialog.setCancelable(false);
                 mProgressDialog.show();

@@ -1,4 +1,4 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/container"
     android:layout_width="match_parent"
@@ -6,10 +6,59 @@
     tools:context="com.footballLatest.app.twitterLogin"
     tools:ignore="MergeRootFrame" >
 
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/twitterLogo"
+        android:src="@drawable/ic_twitter"
+        android:layout_centerHorizontal="true" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/profileImage"
+        android:layout_below="@+id/twitter"
+        android:layout_centerHorizontal="true"
+        android:visibility="gone"
+        />
+
+
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:visibility="gone"
+        android:layout_below="@+id/profileImage"
+        android:id="@+id/screenName"
+        />
+
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Login"
+        android:gravity="center"
         android:id="@+id/btnLogin"
-        android:layout_gravity="left|top" />
-</FrameLayout>
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/abc_cab_background_top_holo_dark"
+        android:textColor="#fff"
+        android:layout_marginTop="137dp"
+        android:layout_below="@+id/imageView"
+         />
+
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Logout"
+        android:id="@+id/btnLogout"
+        android:layout_below="@+id/btnLogin"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/abc_cab_background_top_holo_dark"
+        android:textColor="#fff"
+        android:visibility="gone"
+        />
+
+
+</RelativeLayout>
