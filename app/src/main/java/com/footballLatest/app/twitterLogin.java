@@ -54,10 +54,10 @@ public class twitterLogin extends Activity implements View.OnClickListener {
     TextView screenName;
     private static RequestToken requestToken;
 
-    //static String PREFERENCE_NAME = "twitter_oauth";
+    static String PREFERENCE_NAME = "twitter_oauth";
     // Twitter oauth urls
-    //static final String URL_TWITTER_AUTH = "auth_url";
-    // static final String URL_TWITTER_OAUTH_TOKEN = "oauth_token";
+    static final String URL_TWITTER_AUTH = "auth_url";
+    static final String URL_TWITTER_OAUTH_TOKEN = "oauth_token";
 
     @SuppressLint("NewApi")
     @Override
@@ -65,16 +65,16 @@ public class twitterLogin extends Activity implements View.OnClickListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_twitter_login);
 
-        /*if (android.os.Build.VERSION.SDK_INT > 9)
+        if (android.os.Build.VERSION.SDK_INT > 9)
         {
             StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
             StrictMode.setThreadPolicy(policy);
         }
-*/
+
         // Shared Preferences
         mSharedPreferences = getApplicationContext().getSharedPreferences("MyPref", 0);
 
-        screenName=(TextView)findViewById(R.id.username);
+        screenName=(TextView)findViewById(R.id.screenName);
         twitterLogo=(ImageView)findViewById(R.id.twitterLogo);
         profilePic=(ImageView)findViewById(R.id.profileImage);
         login=(Button)findViewById(R.id.btnLogin);
@@ -115,7 +115,7 @@ public class twitterLogin extends Activity implements View.OnClickListener {
                         logout.setVisibility(View.VISIBLE);
                         screenName.setVisibility(View.VISIBLE);
                         profilePic.setVisibility(View.VISIBLE);
-                        URL url = new URL(user.getProfileImageURL());
+                        URL url = new URL(user.getProfileImageURL().toString());
                         bitmap = BitmapFactory.decodeStream(url.openStream());
                         profilePic.setImageBitmap(bitmap);
                         screenName.setText(user.getScreenName());
@@ -135,7 +135,7 @@ public class twitterLogin extends Activity implements View.OnClickListener {
                 URL url = null;
 
                 try {
-                    url = new URL(imageUrl);
+                    url = new URL(imageUrl.toString());
                     bitmap = BitmapFactory.decodeStream(url.openStream());
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -171,8 +171,9 @@ public class twitterLogin extends Activity implements View.OnClickListener {
         switch(view.getId())
         {
             case R.id.btnLogin:
-              new doTwitterLogin().execute();
-              break;
+            //  new doTwitterLogin().execute();
+                loginToTwitter();
+                break;
             case R.id.btnLogout:
                 new doTwitterLogout().execute();
                 break;
@@ -218,11 +219,12 @@ public class twitterLogin extends Activity implements View.OnClickListener {
 
             TwitterFactory factory = new TwitterFactory(configuration);
             twitter = factory.getInstance();
-
+            Log.i(LOGCAT,"CALLBACK-->"+Constants.TWITTER_CALLBACK_URL.toString());
             try {
-                requestToken = twitter.getOAuthRequestToken(Constants.TWITTER_CALLBACK_URL);
+                requestToken = twitter.getOAuthRequestToken(Constants.TWITTER_CALLBACK_URL.toString());
                 this.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(requestToken.getAuthenticationURL())));
             } catch (TwitterException e) {
+                Log.i(LOGCAT,"Error"+e.getMessage());
                 e.printStackTrace();
             }
         } else {

@@ -39,6 +39,8 @@ public class foxSportsSinglePage extends Activity {
             "Twitter",
 
     };
+    String url;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,7 +75,8 @@ public class foxSportsSinglePage extends Activity {
         foxImage=(ImageView)findViewById(R.id.FoxImage);
 
         Intent intent = getIntent();
-        String url=intent.getStringExtra("URL");
+        url=intent.getStringExtra("URL");
+
 
         class foxSportsSingle extends AsyncTask<String,Void,Void> {
             //ImageView image;

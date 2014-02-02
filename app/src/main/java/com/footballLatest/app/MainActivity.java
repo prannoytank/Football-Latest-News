@@ -108,6 +108,7 @@ public class MainActivity extends Activity implements View.OnClickListener{
                 Intent i = new Intent(MainActivity.this,bbcNewsSinglePage.class);
                 // i.setData(Uri.parse(fullObject.getLink()));
                 i.putExtra("URL",fullObject.getLink());
+                i.putExtra("TITLE",fullObject.getTitle());
                 startActivity(i);
 
             }
