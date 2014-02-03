@@ -1,13 +1,16 @@
 package com.footballLatest.app;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
@@ -42,7 +45,8 @@ public class bbcNewsSinglePage extends Activity {
             "Twitter",
 
     };
-    String feedTitle;
+    String feedTitle,url;
+    SharedPreferences mSharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,14 +63,15 @@ public class bbcNewsSinglePage extends Activity {
         foxImage=(ImageView)findViewById(R.id.FoxImage);
 
         Intent intent = getIntent();
-        String url=intent.getStringExtra("URL");
+         url=intent.getStringExtra("URL");
         feedTitle=intent.getStringExtra("TITLE");
 
+        mSharedPreferences=getApplicationContext().getSharedPreferences("MyPref", 0);
+
         class foxSportsSingle extends AsyncTask<String,Void,Void> {
-            //ImageView image;
-            TextView content;
+
+
             String url;
-            //TextView title;
             Document doc,titleDoc;
             Elements description,image,title;
             String MainContent;
@@ -76,10 +81,9 @@ public class bbcNewsSinglePage extends Activity {
             Bitmap bitmap;
             foxSportsSingle(String url)
             {
-                //this.image=image;
-                this.content=content;
+
                 this.url=url;
-                //this.title=title;
+
             }
 
             @Override
@@ -87,15 +91,15 @@ public class bbcNewsSinglePage extends Activity {
 
                 try {
                     doc = Jsoup.connect(url).get();
-                   if(doc.select(".story-body .article #headline h1").hasText() == true)
+                   /*if(doc.select(".story-body .article #headline h1").hasText() == true)
                    {
                     title=doc.select(".story-body .article #headline h1");
                     MainTitle=title.text().toString();
                    }
                     else
-                   {
+                   {*/
                       MainTitle=feedTitle;
-                   }
+                   //}
                     // titleDoc=Jsoup.parse(title.toString());
 
                     description = doc.select(".story-body .article p");
@@ -122,7 +126,7 @@ public class bbcNewsSinglePage extends Activity {
                 mProgressDialog.setMessage("Fetching...");
                 mProgressDialog.setIndeterminate(false);
                 mProgressDialog.setCancelable(false);
-                mProgressDialog.show();
+               // mProgressDialog.show();
             }
 
 
@@ -158,6 +162,47 @@ public class bbcNewsSinglePage extends Activity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
+        if(id == R.id.twitter_tweet)
+        {
+            if(!isTwitterLoggedInAlready())
+            {
+                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(bbcNewsSinglePage.this);
+
+                // set title
+                alertDialogBuilder.setTitle("Twitter Account Not Configured");
+
+                // set dialog message
+                alertDialogBuilder
+                        .setMessage("Do you want to configure your twitter account!!!")
+                        .setCancelable(false)
+                        .setPositiveButton("Yes",new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog,int id) {
+
+                                Intent noTwitterAccount=new Intent(bbcNewsSinglePage.this,twitterLogin.class);
+                                startActivity(noTwitterAccount);
+                            }
+                        })
+                        .setNegativeButton("No",new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog,int id) {
+
+                                dialog.cancel();
+                            }
+                        });
+
+                // create alert dialog
+                AlertDialog alertDialog = alertDialogBuilder.create();
+
+                // show it
+                alertDialog.show();
+
+
+            }
+            else
+            {
+            new updateTwitterStatus().execute();
+            }
+        }
+
         if (id == R.id.action_settings) {
             return true;
         }
@@ -169,27 +214,30 @@ public class bbcNewsSinglePage extends Activity {
 
     class updateTwitterStatus extends AsyncTask<String, String, String> {
         ProgressDialog pDialog;
-        SharedPreferences mSharedPreferences;
+
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
+
+
             pDialog = new ProgressDialog(bbcNewsSinglePage.this);
             pDialog.setMessage("Updating to twitter...");
             pDialog.setIndeterminate(false);
             pDialog.setCancelable(false);
             pDialog.show();
-        }
+            }
+
         protected String doInBackground(String... args) {
             //Log.d("Tweet Text", "> " + args[0]);
-            String status = args[0];
+            //String status = args[0];
             try {
                 ConfigurationBuilder builder = new ConfigurationBuilder();
                 builder.setOAuthConsumerKey(AccountsDetails.TWITTER_CONSUMER_KEY);
                 builder.setOAuthConsumerSecret(AccountsDetails.TWITTER_CONSUMER_SECRET);
                 // Access Token
-                String access_token = mSharedPreferences.getString(Constants.TWITTER_PREF_KEY_OAUTH_TOKEN, "");
+                String access_token = mSharedPreferences.getString(Constants.TWITTER_PREF_KEY_OAUTH_TOKEN, null);
                 // Access Token Secret
-                String access_token_secret = mSharedPreferences.getString(Constants.TWITTER_PREF_KEY_OAUTH_SECRET, "");
+                String access_token_secret = mSharedPreferences.getString(Constants.TWITTER_PREF_KEY_OAUTH_SECRET,null);
 
                 AccessToken accessToken = new AccessToken(access_token, access_token_secret);
                 Twitter twitter = new TwitterFactory(builder.build()).getInstance(accessToken);
@@ -197,8 +245,9 @@ public class bbcNewsSinglePage extends Activity {
                 // Update status
                 twitter4j.Status response = null;
 
-                    response = twitter.updateStatus(status);
+                response = twitter.updateStatus(url);
             }catch (TwitterException e) {
+                Log.i("Error",e.getMessage());
                     e.printStackTrace();
                 }
 
@@ -223,6 +272,14 @@ public class bbcNewsSinglePage extends Activity {
             });
         }
     }
+
+
+    public boolean isTwitterLoggedInAlready() {
+        // return twitter login status from Shared Preferences
+        return mSharedPreferences.getBoolean(Constants.TWITTER_PREF_KEY_TWITTER_LOGIN, false);
+    }
+
+
 
 
 

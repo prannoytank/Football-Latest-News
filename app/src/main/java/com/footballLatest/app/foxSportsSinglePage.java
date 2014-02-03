@@ -2,8 +2,11 @@ package com.footballLatest.app;
 
 import android.app.ActionBar;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
@@ -23,12 +26,21 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.footballLatest.app.Util.AccountsDetails;
+import com.footballLatest.app.Util.Constants;
+
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
 import java.net.URL;
+
+import twitter4j.Twitter;
+import twitter4j.TwitterException;
+import twitter4j.TwitterFactory;
+import twitter4j.auth.AccessToken;
+import twitter4j.conf.ConfigurationBuilder;
 
 public class foxSportsSinglePage extends Activity {
 
@@ -40,7 +52,7 @@ public class foxSportsSinglePage extends Activity {
 
     };
     String url;
-
+    SharedPreferences mSharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +65,8 @@ public class foxSportsSinglePage extends Activity {
         //getActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
         getActionBar().setDisplayUseLogoEnabled(false);
         getActionBar().setDisplayShowTitleEnabled(false);
+
+        mSharedPreferences=getApplicationContext().getSharedPreferences("MyPref", 0);
         /** Defining Navigation listener */
       /*  ActionBar.OnNavigationListener navigationListener = new ActionBar.OnNavigationListener() {
 
@@ -170,12 +184,125 @@ public class foxSportsSinglePage extends Activity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
+        if(id == R.id.twitter_tweet)
+        {
+            if(!isTwitterLoggedInAlready())
+            {
+                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(foxSportsSinglePage.this);
+
+                // set title
+                alertDialogBuilder.setTitle("Twitter Account Not Configured");
+
+                // set dialog message
+                alertDialogBuilder
+                        .setMessage("Do you want to configure your twitter account!!!")
+                        .setCancelable(false)
+                        .setPositiveButton("Yes",new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog,int id) {
+
+                                Intent noTwitterAccount=new Intent(foxSportsSinglePage.this,twitterLogin.class);
+                                startActivity(noTwitterAccount);
+                            }
+                        })
+                        .setNegativeButton("No",new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog,int id) {
+
+                                dialog.cancel();
+                            }
+                        });
+
+                // create alert dialog
+                AlertDialog alertDialog = alertDialogBuilder.create();
+
+                // show it
+                alertDialog.show();
+            }
+            else
+            {
+            new updateTwitterStatus().execute();
+            }
+            }
+
         if (id == R.id.action_settings) {
             return true;
         }
         return super.onOptionsItemSelected(item);
     }
 
+
+
+    class updateTwitterStatus extends AsyncTask<String, String, String> {
+        ProgressDialog pDialog;
+
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+
+            if(!isTwitterLoggedInAlready())
+            {
+                Intent noTwitterAccount=new Intent(foxSportsSinglePage.this,twitterLogin.class);
+                startActivity(noTwitterAccount);
+            }
+            else
+            {
+            pDialog = new ProgressDialog(foxSportsSinglePage.this);
+            pDialog.setMessage("Updating to twitter...");
+            pDialog.setIndeterminate(false);
+            pDialog.setCancelable(false);
+            pDialog.show();
+            }
+            }
+        protected String doInBackground(String... args) {
+            //Log.d("Tweet Text", "> " + args[0]);
+            //String status = args[0];
+            try {
+
+                ConfigurationBuilder builder = new ConfigurationBuilder();
+                builder.setOAuthConsumerKey(AccountsDetails.TWITTER_CONSUMER_KEY);
+                builder.setOAuthConsumerSecret(AccountsDetails.TWITTER_CONSUMER_SECRET);
+                // Access Token
+                String access_token = mSharedPreferences.getString(Constants.TWITTER_PREF_KEY_OAUTH_TOKEN, null);
+                // Access Token Secret
+                String access_token_secret = mSharedPreferences.getString(Constants.TWITTER_PREF_KEY_OAUTH_SECRET,null);
+
+                AccessToken accessToken = new AccessToken(access_token, access_token_secret);
+                Twitter twitter = new TwitterFactory(builder.build()).getInstance(accessToken);
+
+                // Update status
+                twitter4j.Status response = null;
+
+                response = twitter.updateStatus(url);
+            }catch (TwitterException e) {
+                Log.i("Error",e.getMessage());
+                e.printStackTrace();
+            }
+
+
+
+            return null;
+
+        }
+        protected void onPostExecute(String file_url) {
+            // dismiss the dialog after getting all products
+            pDialog.dismiss();
+            // updating UI from Background Thread
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(getApplicationContext(),
+                            "Status tweeted successfully", Toast.LENGTH_SHORT)
+                            .show();
+                    // Clearing EditText field
+                    //sts.setText("");
+                }
+            });
+        }
+    }
+    public boolean isTwitterLoggedInAlready() {
+        // return twitter login status from Shared Preferences
+        return mSharedPreferences.getBoolean(Constants.TWITTER_PREF_KEY_TWITTER_LOGIN, false);
+    }
 
 
 }
