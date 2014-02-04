@@ -4,9 +4,9 @@
     android:layout_height="fill_parent"
     >
 
-<ListView android:id="@+id/MainMenuListView"
+<ListView android:id="@id/android:list"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:entries="@array/MainMenu"
-    />
+    android:layout_height="wrap_content" />
+    //android:entries="@array/MainMenu"
+
     </LinearLayout>

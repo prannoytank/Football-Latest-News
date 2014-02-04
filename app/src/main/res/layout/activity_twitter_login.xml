@@ -19,7 +19,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/profileImage"
-        android:src="@drawable/soccer48"
+
         android:layout_centerInParent="true"
         android:layout_centerHorizontal="true"
         android:visibility="gone"

@@ -18,7 +18,7 @@ public class MainMenu extends Activity implements AdapterView.OnItemClickListene
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_menu);
 
-        listView = (ListView) findViewById(R.id.MainMenuListView);
+        listView = (ListView) findViewById(android.R.id.list);
         listView.setOnItemClickListener(this);
     }
 

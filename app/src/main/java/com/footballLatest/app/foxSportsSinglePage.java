@@ -53,6 +53,7 @@ public class foxSportsSinglePage extends Activity {
     };
     String url;
     SharedPreferences mSharedPreferences;
+    Elements title;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,7 +99,7 @@ public class foxSportsSinglePage extends Activity {
             String url;
             //TextView title;
             Document doc,titleDoc;
-            Elements description,image,title;
+            Elements description,image;
             String MainContent;
             String MainTitle;
             String MainImage;
@@ -123,6 +124,10 @@ public class foxSportsSinglePage extends Activity {
 
                     description = doc.select("div.content p");
                     image=doc.select("article header img");
+                    if(image == null)
+                    {
+                        image=doc.select("header #brand a img");
+                    }
                     MainImage=image.attr("abs:src");
                     URL url = new URL(MainImage);
                     bitmap = BitmapFactory.decodeStream(url.openStream());
@@ -142,7 +147,7 @@ public class foxSportsSinglePage extends Activity {
                 super.onPreExecute();
 
                // mProgressDialog.setTitle("Android Basic JSoup Tutorial");
-                mProgressDialog.setMessage("Fetching...");
+                mProgressDialog.setMessage("Loading...");
                 mProgressDialog.setIndeterminate(false);
                 mProgressDialog.setCancelable(false);
                 mProgressDialog.show();
@@ -272,7 +277,7 @@ public class foxSportsSinglePage extends Activity {
                 // Update status
                 twitter4j.Status response = null;
 
-                response = twitter.updateStatus(url);
+                response = twitter.updateStatus(title.text().toString()+"\n"+url);
             }catch (TwitterException e) {
                 Log.i("Error",e.getMessage());
                 e.printStackTrace();

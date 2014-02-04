@@ -126,7 +126,7 @@ public class bbcNewsSinglePage extends Activity {
                 mProgressDialog.setMessage("Fetching...");
                 mProgressDialog.setIndeterminate(false);
                 mProgressDialog.setCancelable(false);
-               // mProgressDialog.show();
+                mProgressDialog.show();
             }
 
 
@@ -245,7 +245,7 @@ public class bbcNewsSinglePage extends Activity {
                 // Update status
                 twitter4j.Status response = null;
 
-                response = twitter.updateStatus(url);
+                response = twitter.updateStatus(feedTitle+"\n"+url);
             }catch (TwitterException e) {
                 Log.i("Error",e.getMessage());
                     e.printStackTrace();

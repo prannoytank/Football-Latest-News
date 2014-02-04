@@ -39,7 +39,7 @@ public class Splash extends Activity
 				}
 				finally
 				{
-					Intent start=new Intent("com.footballLatest.app.MainMenu");
+					Intent start=new Intent("com.footballLatest.app.HomePager");
 					startActivity(start);
 					
 				}

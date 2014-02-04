@@ -91,7 +91,11 @@ public class twitterLogin extends Activity implements View.OnClickListener {
 
         login.setOnClickListener(this);
         logout.setOnClickListener(this);
-
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+           try
+           {
             if (!isTwitterLoggedInAlready()) {
                 Uri uri = getIntent().getData();
                 if (uri != null && uri.toString().startsWith(Constants.TWITTER_CALLBACK_URL)) {
@@ -120,19 +124,9 @@ public class twitterLogin extends Activity implements View.OnClickListener {
                         screenName.setVisibility(View.VISIBLE);
                         profilePic.setVisibility(View.VISIBLE);
 
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                URL url = null;
-                                try {
-                                    url = new URL(user.getProfileImageURL().toString());
-                                    bitmap = BitmapFactory.decodeStream(url.openStream());
-                                    profilePic.setImageBitmap(bitmap);
-                                } catch (IOException e1) {
-                                    e1.printStackTrace();
-                                }
-                            }
-                        });
+                        URL url = new URL(user.getProfileImageURL().toString());
+                        bitmap = BitmapFactory.decodeStream(url.openStream());
+                        profilePic.setImageBitmap(bitmap);
 
                         screenName.setText(user.getScreenName());
                     } catch (Exception e) {
@@ -149,22 +143,20 @@ public class twitterLogin extends Activity implements View.OnClickListener {
                 screenName.setVisibility(View.VISIBLE);
                 profilePic.setVisibility(View.VISIBLE);
 
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        URL url = null;
-                        try {
-                            url = new URL(imageUrl.toString());
-                            bitmap = BitmapFactory.decodeStream(url.openStream());
-                            profilePic.setImageBitmap(bitmap);
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                });
+                URL url = new URL(imageUrl.toString());
+                bitmap = BitmapFactory.decodeStream(url.openStream());
+                profilePic.setImageBitmap(bitmap);
+
                 screenName.setText(name);
             }
- }
+           }
+           catch (Exception e)
+           {
+               e.printStackTrace();
+           }
+       }
+        });
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

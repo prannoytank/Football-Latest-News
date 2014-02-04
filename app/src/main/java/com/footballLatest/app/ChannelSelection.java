@@ -43,7 +43,7 @@ public class ChannelSelection extends TabActivity {
         // Adding all TabSpec to TabHost
         tabHost.addTab(inboxSpec); // Adding Inbox tab
         tabHost.addTab(outboxSpec); // Adding Outbox tab
-        tabHost.setCurrentTab(0);
+        //tabHost.setCurrentTab(0);
 
     }
 }
