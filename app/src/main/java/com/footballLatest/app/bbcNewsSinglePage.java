@@ -2,6 +2,7 @@ package com.footballLatest.app;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -13,6 +14,10 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.Window;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -40,11 +45,6 @@ public class bbcNewsSinglePage extends Activity {
 
     TextView foxTitle,foxContent;
     ImageView foxImage;
-    String[] actions = new String[] {
-            "Share",
-            "Twitter",
-
-    };
     String feedTitle,url;
     SharedPreferences mSharedPreferences;
 
@@ -72,8 +72,8 @@ public class bbcNewsSinglePage extends Activity {
 
 
             String url;
-            Document doc,titleDoc;
-            Elements description,image,title;
+            Document doc;
+            Elements description,image;
             String MainContent;
             String MainTitle;
             String MainImage;
@@ -91,17 +91,7 @@ public class bbcNewsSinglePage extends Activity {
 
                 try {
                     doc = Jsoup.connect(url).get();
-                   /*if(doc.select(".story-body .article #headline h1").hasText() == true)
-                   {
-                    title=doc.select(".story-body .article #headline h1");
-                    MainTitle=title.text().toString();
-                   }
-                    else
-                   {*/
-                      MainTitle=feedTitle;
-                   //}
-                    // titleDoc=Jsoup.parse(title.toString());
-
+                    MainTitle=feedTitle;
                     description = doc.select(".story-body .article p");
                     image=doc.select(".story-body .story-feature img");
                     MainImage=image.attr("abs:src");
@@ -123,10 +113,10 @@ public class bbcNewsSinglePage extends Activity {
                 super.onPreExecute();
 
                 // mProgressDialog.setTitle("Android Basic JSoup Tutorial");
-                mProgressDialog.setMessage("Fetching...");
+                mProgressDialog.setMessage("Loading...");
                 mProgressDialog.setIndeterminate(false);
                 mProgressDialog.setCancelable(false);
-                mProgressDialog.show();
+                //mProgressDialog.show();
             }
 
 
@@ -147,10 +137,7 @@ public class bbcNewsSinglePage extends Activity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-
         // Inflate the menu; this adds items to the action bar if it is present.
-
-
         getMenuInflater().inflate(R.menu.social_share, menu);
         return true;
 
@@ -199,37 +186,73 @@ public class bbcNewsSinglePage extends Activity {
             }
             else
             {
-            new updateTwitterStatus().execute();
+                showCustomDialog();
             }
         }
 
         if (id == R.id.action_settings) {
             return true;
         }
-
-
-
         return super.onOptionsItemSelected(item);
+    }
+
+    protected void showCustomDialog() {
+        // TODO Auto-generated method stub
+        final Dialog dialog = new Dialog(bbcNewsSinglePage.this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.twitter_custom_dialog);
+
+        final EditText editText = (EditText)dialog.findViewById(R.id.tweetBox);
+        Button yesTweet= (Button)dialog.findViewById(R.id.yesTweet);
+        Button cancelTweet=(Button)dialog.findViewById(R.id.noTweet);
+        TextView count=(TextView)dialog.findViewById(R.id.count);
+        editText.append(feedTitle+"\n"+url);
+
+        yesTweet.setOnClickListener(new View.OnClickListener() {
+
+
+            @Override
+            public void onClick(View v) {
+                // TODO Auto-generated method stub
+                new updateTwitterStatus(editText.getText().toString(), dialog).execute();
+
+            }
+        });
+        cancelTweet.setOnClickListener(new View.OnClickListener()
+        {
+           public void onClick(View v){
+
+             dialog.dismiss();
+           }
+        });
+
+        dialog.show();
     }
 
     class updateTwitterStatus extends AsyncTask<String, String, String> {
         ProgressDialog pDialog;
+        Dialog dialog = new Dialog(bbcNewsSinglePage.this);
+        String tweetText;
+
+        updateTwitterStatus(String tweetText,Dialog dialog)
+        {
+            this.tweetText=tweetText;
+            this.dialog=dialog;
+        }
 
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
 
-
             pDialog = new ProgressDialog(bbcNewsSinglePage.this);
             pDialog.setMessage("Updating to twitter...");
             pDialog.setIndeterminate(false);
             pDialog.setCancelable(false);
-            pDialog.show();
+            //pDialog.show();
             }
 
         protected String doInBackground(String... args) {
-            //Log.d("Tweet Text", "> " + args[0]);
-            //String status = args[0];
+
             try {
                 ConfigurationBuilder builder = new ConfigurationBuilder();
                 builder.setOAuthConsumerKey(AccountsDetails.TWITTER_CONSUMER_KEY);
@@ -245,16 +268,13 @@ public class bbcNewsSinglePage extends Activity {
                 // Update status
                 twitter4j.Status response = null;
 
-                response = twitter.updateStatus(feedTitle+"\n"+url);
+                response = twitter.updateStatus(tweetText);
+                dialog.dismiss();
             }catch (TwitterException e) {
                 Log.i("Error",e.getMessage());
                     e.printStackTrace();
                 }
-
-
-
             return null;
-
         }
         protected void onPostExecute(String file_url) {
             // dismiss the dialog after getting all products
@@ -272,17 +292,8 @@ public class bbcNewsSinglePage extends Activity {
             });
         }
     }
-
-
     public boolean isTwitterLoggedInAlready() {
         // return twitter login status from Shared Preferences
         return mSharedPreferences.getBoolean(Constants.TWITTER_PREF_KEY_TWITTER_LOGIN, false);
     }
-
-
-
-
-
-
-
 }

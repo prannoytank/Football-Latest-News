@@ -3,6 +3,7 @@ package com.footballLatest.app;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -21,7 +22,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.os.Build;
+import android.view.Window;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -46,11 +50,6 @@ public class foxSportsSinglePage extends Activity {
 
     TextView foxTitle,foxContent;
     ImageView foxImage;
-    String[] actions = new String[] {
-            "Share",
-            "Twitter",
-
-    };
     String url;
     SharedPreferences mSharedPreferences;
     Elements title;
@@ -60,8 +59,6 @@ public class foxSportsSinglePage extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fox_sports_single_page);
 
-        //ArrayAdapter<String> adapter = new ArrayAdapter<String>(getBaseContext(), android.R.layout.simple_spinner_dropdown_item, actions);
-
         /** Enabling dropdown list navigation for the action bar */
         //getActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
         getActionBar().setDisplayUseLogoEnabled(false);
@@ -69,20 +66,6 @@ public class foxSportsSinglePage extends Activity {
 
         mSharedPreferences=getApplicationContext().getSharedPreferences("MyPref", 0);
         /** Defining Navigation listener */
-      /*  ActionBar.OnNavigationListener navigationListener = new ActionBar.OnNavigationListener() {
-
-            @Override
-            public boolean onNavigationItemSelected(int itemPosition, long itemId) {
-                Toast.makeText(getBaseContext(), "You selected : " + actions[itemPosition], Toast.LENGTH_SHORT).show();
-                return false;
-            }
-        };*/
-
-        /** Setting dropdown items and item navigation listener for the actionbar */
-        //getActionBar().setListNavigationCallbacks(adapter, navigationListener);
-        //getActionBar().setSelectedNavigationItem(0);
-
-
 
         foxTitle=(TextView)findViewById(R.id.FoxTitle);
 
@@ -94,23 +77,17 @@ public class foxSportsSinglePage extends Activity {
 
 
         class foxSportsSingle extends AsyncTask<String,Void,Void> {
-            //ImageView image;
-            TextView content;
+
+
             String url;
-            //TextView title;
-            Document doc,titleDoc;
+            Document doc;
             Elements description,image;
             String MainContent;
-            String MainTitle;
             String MainImage;
             ProgressDialog mProgressDialog = new ProgressDialog(foxSportsSinglePage.this);
             Bitmap bitmap;
-            foxSportsSingle(String url)
-            {
-               //this.image=image;
-                this.content=content;
-                this.url=url;
-                //this.title=title;
+            foxSportsSingle(String url){
+            this.url=url;
             }
 
             @Override
@@ -120,7 +97,6 @@ public class foxSportsSinglePage extends Activity {
                      doc = Jsoup.connect(url).get();
 
                     title=doc.select("article header h1");
-                   // titleDoc=Jsoup.parse(title.toString());
 
                     description = doc.select("div.content p");
                     image=doc.select("article header img");
@@ -131,7 +107,7 @@ public class foxSportsSinglePage extends Activity {
                     MainImage=image.attr("abs:src");
                     URL url = new URL(MainImage);
                     bitmap = BitmapFactory.decodeStream(url.openStream());
-                    //image=image.attr("src");
+
                     Document doc = Jsoup.parse(description.toString());
                     doc.select("p").prepend("\\n\\n");
                     MainContent=doc.text().replace("\\n", "\n");
@@ -224,7 +200,7 @@ public class foxSportsSinglePage extends Activity {
             }
             else
             {
-            new updateTwitterStatus().execute();
+                showCustomDialog();
             }
             }
 
@@ -234,10 +210,51 @@ public class foxSportsSinglePage extends Activity {
         return super.onOptionsItemSelected(item);
     }
 
+    protected void showCustomDialog() {
+        // TODO Auto-generated method stub
+        final Dialog dialog = new Dialog(foxSportsSinglePage.this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.twitter_custom_dialog);
+
+        final EditText editText = (EditText)dialog.findViewById(R.id.tweetBox);
+        Button yesTweet= (Button)dialog.findViewById(R.id.yesTweet);
+        Button cancelTweet=(Button)dialog.findViewById(R.id.noTweet);
+        TextView count=(TextView)dialog.findViewById(R.id.count);
+        editText.append("Fox Sports: "+title.text().toString()+"\n"+url);
+
+        yesTweet.setOnClickListener(new View.OnClickListener() {
+
+
+            @Override
+            public void onClick(View v) {
+                // TODO Auto-generated method stub
+                new updateTwitterStatus(editText.getText().toString(), dialog).execute();
+
+            }
+        });
+        cancelTweet.setOnClickListener(new View.OnClickListener()
+        {
+            public void onClick(View v){
+
+                dialog.dismiss();
+            }
+        });
+
+        dialog.show();
+    }
 
 
     class updateTwitterStatus extends AsyncTask<String, String, String> {
         ProgressDialog pDialog;
+
+        Dialog dialog = new Dialog(foxSportsSinglePage.this);
+        String tweetText;
+
+        updateTwitterStatus(String tweetText,Dialog dialog)
+        {
+            this.tweetText=tweetText;
+            this.dialog=dialog;
+        }
 
 
         @Override
@@ -277,7 +294,8 @@ public class foxSportsSinglePage extends Activity {
                 // Update status
                 twitter4j.Status response = null;
 
-                response = twitter.updateStatus(title.text().toString()+"\n"+url);
+                response = twitter.updateStatus(tweetText);
+                dialog.dismiss();
             }catch (TwitterException e) {
                 Log.i("Error",e.getMessage());
                 e.printStackTrace();

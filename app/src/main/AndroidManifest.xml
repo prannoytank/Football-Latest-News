@@ -34,11 +34,11 @@
 
         <activity android:name="com.footballLatest.app.twitterLogin"
             android:configChanges="orientation|screenSize"
-            android:parentActivityName="com.footballLatest.app.MainMenu">
+            android:parentActivityName="com.footballLatest.app.HomePager">
             <!-- Parent activity meta-data to support 4.0 and lower -->
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.footballLatest.app.MainMenu" />
+                android:value="com.footballLatest.app.HomePager" />
             <intent-filter>
                 <action android:name="com.footballLatest.app.twitterLogin" />
 

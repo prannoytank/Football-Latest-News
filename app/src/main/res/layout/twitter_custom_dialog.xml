@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="5dip"
+    android:background="#eeeeee">
+
+    <EditText
+        android:id="@+id/tweetBox"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:ems="20"
+
+        android:singleLine="false"
+        android:inputType="textMultiLine"
+        android:lines="8"
+        android:gravity="top"
+        android:maxLength="140"
+        >
+        <requestFocus />
+    </EditText>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="140"
+        android:id="@+id/count"
+        android:layout_marginTop="10dp"
+        android:layout_below="@+id/tweetBox"
+        android:layout_alignParentLeft="false"
+        android:layout_alignParentRight="true"
+
+        />
+
+    <Button
+        android:id="@+id/yesTweet"
+        android:layout_width="match_parent"
+        android:layout_height="40dip"
+        android:layout_below="@+id/count"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="17dp"
+        android:text="Tweet"
+        android:textSize="25sp"
+        android:background="#336699"
+        android:textColor="#eee"
+        />
+
+    <Button
+        android:id="@+id/noTweet"
+        android:layout_width="match_parent"
+        android:layout_height="40dip"
+        android:layout_below="@id/yesTweet"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="20dp"
+        android:text="Cancel"
+        android:textSize="25sp"
+        android:background="#336699"
+        android:textColor="#eee"
+        />
+
+
+
+</RelativeLayout>
