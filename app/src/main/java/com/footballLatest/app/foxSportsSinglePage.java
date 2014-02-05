@@ -14,6 +14,8 @@ import android.os.AsyncTask;
 
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -53,6 +55,7 @@ public class foxSportsSinglePage extends Activity {
     String url;
     SharedPreferences mSharedPreferences;
     Elements title;
+    TextView count1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -126,7 +129,7 @@ public class foxSportsSinglePage extends Activity {
                 mProgressDialog.setMessage("Loading...");
                 mProgressDialog.setIndeterminate(false);
                 mProgressDialog.setCancelable(false);
-                mProgressDialog.show();
+               // mProgressDialog.show();
             }
 
 
@@ -219,8 +222,39 @@ public class foxSportsSinglePage extends Activity {
         final EditText editText = (EditText)dialog.findViewById(R.id.tweetBox);
         Button yesTweet= (Button)dialog.findViewById(R.id.yesTweet);
         Button cancelTweet=(Button)dialog.findViewById(R.id.noTweet);
-        TextView count=(TextView)dialog.findViewById(R.id.count);
+        TextView tweetName=(TextView)dialog.findViewById(R.id.tweetName);
+        String screenName=mSharedPreferences.getString(Constants.TWITTER_SCREEN_NAME,null);
+        tweetName.setText("@"+screenName);
+
+        count1 =(TextView)dialog.findViewById(R.id.count);
         editText.append("Fox Sports: "+title.text().toString()+"\n"+url);
+        count1.setText(String.valueOf(140-editText.length()));
+
+
+          TextWatcher mTextEditorWatcher = new TextWatcher() {
+             String c;
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                //This sets a textview to the current length
+                c=String.valueOf(140-s.length());
+                count1.setText(c);
+
+            }
+
+             @Override
+             public void afterTextChanged(Editable editable) {
+                 //count1.setText(c);
+
+             }
+
+
+        };
+        editText.addTextChangedListener(mTextEditorWatcher);
+
+
+
 
         yesTweet.setOnClickListener(new View.OnClickListener() {
 

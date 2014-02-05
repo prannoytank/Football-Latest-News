@@ -25,7 +25,20 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="140"
+        android:textColor="#336699"
+        android:id="@+id/tweetName"
+        android:layout_marginTop="10dp"
+        android:layout_below="@+id/tweetBox"
+
+        android:layout_alignParentLeft="true"
+
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+
         android:id="@+id/count"
         android:layout_marginTop="10dp"
         android:layout_below="@+id/tweetBox"
@@ -42,6 +55,7 @@
         android:layout_centerInParent="true"
         android:layout_marginTop="17dp"
         android:text="Tweet"
+
         android:textSize="25sp"
         android:background="#336699"
         android:textColor="#eee"

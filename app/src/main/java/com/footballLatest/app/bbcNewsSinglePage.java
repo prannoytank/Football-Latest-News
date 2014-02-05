@@ -11,6 +11,8 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -43,7 +45,7 @@ import twitter4j.conf.ConfigurationBuilder;
  */
 public class bbcNewsSinglePage extends Activity {
 
-    TextView foxTitle,foxContent;
+    TextView foxTitle,foxContent,count1;
     ImageView foxImage;
     String feedTitle,url;
     SharedPreferences mSharedPreferences;
@@ -205,8 +207,36 @@ public class bbcNewsSinglePage extends Activity {
         final EditText editText = (EditText)dialog.findViewById(R.id.tweetBox);
         Button yesTweet= (Button)dialog.findViewById(R.id.yesTweet);
         Button cancelTweet=(Button)dialog.findViewById(R.id.noTweet);
-        TextView count=(TextView)dialog.findViewById(R.id.count);
-        editText.append(feedTitle+"\n"+url);
+        TextView tweetName=(TextView)dialog.findViewById(R.id.tweetName);
+        String screenName=mSharedPreferences.getString(Constants.TWITTER_SCREEN_NAME,null);
+        tweetName.setText("@"+screenName);
+
+        count1 =(TextView)dialog.findViewById(R.id.count);
+        editText.append("Fox Sports: " + feedTitle + "\n" + url);
+        count1.setText(String.valueOf(140-editText.length()));
+
+
+        TextWatcher mTextEditorWatcher = new TextWatcher() {
+            String c;
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                //This sets a textview to the current length
+                c=String.valueOf(140-s.length());
+                count1.setText(c);
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                //count1.setText(c);
+
+            }
+
+
+        };
+        editText.addTextChangedListener(mTextEditorWatcher);
 
         yesTweet.setOnClickListener(new View.OnClickListener() {
 
