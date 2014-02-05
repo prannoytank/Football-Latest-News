@@ -80,7 +80,7 @@ public class MainActivity extends Activity implements View.OnClickListener{
                 mProgressDialog.setMessage("Loading...");
                 mProgressDialog.setIndeterminate(false);
                 mProgressDialog.setCancelable(false);
-                mProgressDialog.show();
+               // mProgressDialog.show();
             }
             protected void onPostExecute(Void result) {
                 //super.onPostExecute();

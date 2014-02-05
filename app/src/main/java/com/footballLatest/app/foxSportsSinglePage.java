@@ -109,10 +109,12 @@ public class foxSportsSinglePage extends Activity {
                     fdate=doc.select("article .editor time");
                     description = doc.select("div.content p");
                     image=doc.select("article header img");
-                    if(image == null)
+                    if(image.toString() == null || image.toString().isEmpty() || image.toString() == "")
                     {
                         image=doc.select("header #brand a img");
                     }
+                    Log.i("Image Path",image.toString());
+
                     MainImage=image.attr("abs:src");
                     URL url = new URL(MainImage);
                     bitmap = BitmapFactory.decodeStream(url.openStream());
@@ -135,7 +137,7 @@ public class foxSportsSinglePage extends Activity {
                 mProgressDialog.setMessage("Loading...");
                 mProgressDialog.setIndeterminate(false);
                 mProgressDialog.setCancelable(false);
-                mProgressDialog.show();
+               // mProgressDialog.show();
             }
 
 

@@ -5,14 +5,14 @@
       <item
         android:id="@+id/twitter_tweet"
         android:orderInCategory="1"
-        android:showAsAction="ifRoom"
+        android:showAsAction="ifRoom|collapseActionView"
         android:icon="@drawable/ic_twitter"
         android:title="Share it on Twitter"/>
 
     <item
         android:id="@+id/facebook_share"
         android:orderInCategory="1"
-        android:showAsAction="ifRoom"
+        android:showAsAction="ifRoom|collapseActionView"
         android:icon="@drawable/facebook48"
         android:title="Share it on Facebook"/>
 
@@ -21,5 +21,5 @@
         android:icon="@drawable/ic_action_refresh"
         android:title="Refresh"
         android:orderInCategory="1"
-        android:showAsAction="ifRoom" />
+        android:showAsAction="ifRoom|collapseActionView" />
 </menu>

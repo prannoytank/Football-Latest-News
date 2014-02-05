@@ -100,14 +100,34 @@ public class bbcNewsSinglePage extends Activity {
                 try {
                     doc = Jsoup.connect(url).get();
                     MainTitle=feedTitle;
-                    description = doc.select(".story-body .article p");
+
+
+                    if(MainTitle.startsWith("VIDEO:"))
+                    {
+                        MainTitle=MainTitle.substring(7);
+                    }
+
+                    description = doc.select(".story-body .article > p");
+                    if(description.toString() == null || description.toString().isEmpty() || description.toString() == "")
+                    {
+                        description=doc.select(".emp-description p");
+                    }
+
                     fdate=doc.select("#article-sidebar .page-timestamp .date");
+
                     image=doc.select(".story-body .story-feature img");
+                    if(image.toString() == null || image.toString().isEmpty() || image.toString() == ""){
+                        MainImage=doc.select("meta[property=og:image]").attr("content");
+                    }
+                    else{
                     MainImage=image.attr("abs:src");
+                    }
+
                     URL url = new URL(MainImage);
                     bitmap = BitmapFactory.decodeStream(url.openStream());
-                    //image=image.attr("src");
+
                     Document doc = Jsoup.parse(description.toString());
+
                     doc.select("p").prepend("\\n\\n");
                     MainContent=doc.text().replace("\\n", "\n");
                 } catch (IOException e) {
@@ -125,7 +145,7 @@ public class bbcNewsSinglePage extends Activity {
                 mProgressDialog.setMessage("Loading...");
                 mProgressDialog.setIndeterminate(false);
                 mProgressDialog.setCancelable(false);
-                mProgressDialog.show();
+                //mProgressDialog.show();
             }
 
 
