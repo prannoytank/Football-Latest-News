@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:ems="20"
-
+        android:layout_marginTop="10dp"
         android:singleLine="false"
         android:inputType="textMultiLine"
         android:lines="8"
@@ -56,7 +56,7 @@
         android:layout_marginTop="17dp"
         android:text="Tweet"
 
-        android:textSize="25sp"
+        android:textSize="20sp"
         android:background="#336699"
         android:textColor="#eee"
         />
@@ -69,7 +69,7 @@
         android:layout_centerInParent="true"
         android:layout_marginTop="20dp"
         android:text="Cancel"
-        android:textSize="25sp"
+        android:textSize="20sp"
         android:background="#336699"
         android:textColor="#eee"
         />

@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Editable;
@@ -45,8 +46,8 @@ import twitter4j.conf.ConfigurationBuilder;
  */
 public class bbcNewsSinglePage extends Activity {
 
-    TextView foxTitle,foxContent,count1;
-    ImageView foxImage;
+    TextView bbcTitle,bbcContent,count1,bbcDate,mainHeading;
+    ImageView bbcImage;
     String feedTitle,url;
     SharedPreferences mSharedPreferences;
 
@@ -58,14 +59,19 @@ public class bbcNewsSinglePage extends Activity {
 
         getActionBar().setDisplayUseLogoEnabled(false);
         getActionBar().setDisplayShowTitleEnabled(false);
+        mainHeading=(TextView)findViewById(R.id.channelTitle);
+        bbcTitle=(TextView)findViewById(R.id.FoxTitle);
+        bbcDate=(TextView)findViewById(R.id.feedDate);
+        bbcContent=(TextView)findViewById(R.id.FoxContent);
+        bbcImage=(ImageView)findViewById(R.id.FoxImage);
 
-        foxTitle=(TextView)findViewById(R.id.FoxTitle);
+        mainHeading.setText("BBC FOOTBALL");
+        mainHeading.setBackgroundColor(Color.parseColor("#fee620"));
+        mainHeading.setTextColor(Color.BLACK);
 
-        foxContent=(TextView)findViewById(R.id.FoxContent);
-        foxImage=(ImageView)findViewById(R.id.FoxImage);
 
         Intent intent = getIntent();
-         url=intent.getStringExtra("URL");
+        url=intent.getStringExtra("URL");
         feedTitle=intent.getStringExtra("TITLE");
 
         mSharedPreferences=getApplicationContext().getSharedPreferences("MyPref", 0);
@@ -75,7 +81,7 @@ public class bbcNewsSinglePage extends Activity {
 
             String url;
             Document doc;
-            Elements description,image;
+            Elements description,image,fdate;
             String MainContent;
             String MainTitle;
             String MainImage;
@@ -95,6 +101,7 @@ public class bbcNewsSinglePage extends Activity {
                     doc = Jsoup.connect(url).get();
                     MainTitle=feedTitle;
                     description = doc.select(".story-body .article p");
+                    fdate=doc.select("#article-sidebar .page-timestamp .date");
                     image=doc.select(".story-body .story-feature img");
                     MainImage=image.attr("abs:src");
                     URL url = new URL(MainImage);
@@ -118,14 +125,15 @@ public class bbcNewsSinglePage extends Activity {
                 mProgressDialog.setMessage("Loading...");
                 mProgressDialog.setIndeterminate(false);
                 mProgressDialog.setCancelable(false);
-                //mProgressDialog.show();
+                mProgressDialog.show();
             }
 
 
             protected void onPostExecute(Void result) {
-                foxTitle.setText(MainTitle); //Sets the title
-                foxImage.setImageBitmap(bitmap);
-                foxContent.setText(MainContent);
+                bbcTitle.setText(MainTitle); //Sets the title
+                bbcImage.setImageBitmap(bitmap);
+                bbcContent.setText(MainContent);
+                bbcDate.setText(fdate.text().toString());
                 if(mProgressDialog.isShowing())
                 {
                     mProgressDialog.dismiss();

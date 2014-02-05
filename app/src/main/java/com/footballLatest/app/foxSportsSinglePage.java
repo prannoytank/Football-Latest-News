@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.os.AsyncTask;
 
 import android.support.v4.app.Fragment;
@@ -50,7 +51,7 @@ import twitter4j.conf.ConfigurationBuilder;
 
 public class foxSportsSinglePage extends Activity {
 
-    TextView foxTitle,foxContent;
+    TextView foxTitle,foxContent,foxDate,foxHeading;
     ImageView foxImage;
     String url;
     SharedPreferences mSharedPreferences;
@@ -69,11 +70,16 @@ public class foxSportsSinglePage extends Activity {
 
         mSharedPreferences=getApplicationContext().getSharedPreferences("MyPref", 0);
         /** Defining Navigation listener */
-
+        foxHeading=(TextView)findViewById(R.id.channelTitle);
         foxTitle=(TextView)findViewById(R.id.FoxTitle);
-
+        foxDate=(TextView)findViewById(R.id.feedDate);
         foxContent=(TextView)findViewById(R.id.FoxContent);
         foxImage=(ImageView)findViewById(R.id.FoxImage);
+
+        foxHeading.setText("FOX SPORTS - FOOTBALL");
+        foxHeading.setBackgroundColor(Color.parseColor("#1b3353"));
+        foxHeading.setTextColor(Color.WHITE);
+
 
         Intent intent = getIntent();
         url=intent.getStringExtra("URL");
@@ -84,7 +90,7 @@ public class foxSportsSinglePage extends Activity {
 
             String url;
             Document doc;
-            Elements description,image;
+            Elements description,image,fdate;
             String MainContent;
             String MainImage;
             ProgressDialog mProgressDialog = new ProgressDialog(foxSportsSinglePage.this);
@@ -97,10 +103,10 @@ public class foxSportsSinglePage extends Activity {
             protected Void doInBackground(String... strings) {
 
                 try {
-                     doc = Jsoup.connect(url).get();
+                    doc = Jsoup.connect(url).get();
 
                     title=doc.select("article header h1");
-
+                    fdate=doc.select("article .editor time");
                     description = doc.select("div.content p");
                     image=doc.select("article header img");
                     if(image == null)
@@ -129,7 +135,7 @@ public class foxSportsSinglePage extends Activity {
                 mProgressDialog.setMessage("Loading...");
                 mProgressDialog.setIndeterminate(false);
                 mProgressDialog.setCancelable(false);
-               // mProgressDialog.show();
+                mProgressDialog.show();
             }
 
 
@@ -140,6 +146,7 @@ public class foxSportsSinglePage extends Activity {
                 foxTitle.setText(title.text().toString()); //Sets the title
                 foxImage.setImageBitmap(bitmap);
                 foxContent.setText(MainContent);
+                foxDate.setText(fdate.text().toString());
                 if(mProgressDialog.isShowing())
                 {
                     mProgressDialog.dismiss();
