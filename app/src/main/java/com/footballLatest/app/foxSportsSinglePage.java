@@ -137,7 +137,7 @@ public class foxSportsSinglePage extends Activity {
                 mProgressDialog.setMessage("Loading...");
                 mProgressDialog.setIndeterminate(false);
                 mProgressDialog.setCancelable(false);
-               // mProgressDialog.show();
+                mProgressDialog.show();
             }
 
 

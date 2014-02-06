@@ -18,8 +18,8 @@ public class CategoryListFragment extends ListFragment{
 
     /** An array of items to display in ArrayList */
     String myfriends_list[] = new String[]{
-           "Football",
-
+           "Football(Global)",
+           "Clubs"
     };
    ListView listView;
 
@@ -52,10 +52,15 @@ public class CategoryListFragment extends ListFragment{
         super.onListItemClick(l, v, position, id);
 
     String category= (String) ((TextView) v).getText();
-     if(category.equalsIgnoreCase("Football"))
+     if(category.equalsIgnoreCase("Football(Global)"))
      {
          Intent news=new Intent("com.footballLatest.app.ChannelSelection");
          startActivity(news);
+     }
+     else if(category.equalsIgnoreCase("Clubs"))
+     {
+         Intent clubs=new Intent("com.footballLatest.app.ClubsListActivity");
+         startActivity(clubs);
      }
 
 
