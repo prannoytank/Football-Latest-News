@@ -306,7 +306,7 @@ public class bbcNewsSinglePage extends Activity {
             pDialog.setMessage("Updating to twitter...");
             pDialog.setIndeterminate(false);
             pDialog.setCancelable(false);
-            //pDialog.show();
+            pDialog.show();
             }
 
         protected String doInBackground(String... args) {

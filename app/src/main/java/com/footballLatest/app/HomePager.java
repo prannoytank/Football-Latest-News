@@ -23,6 +23,11 @@ public class HomePager extends FragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.home_pager);
 
+
+
+
+
+
         actionabar = getActionBar();
         actionabar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 
